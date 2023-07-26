@@ -1,0 +1,40 @@
+contacts:
+  - asis-devops@nfq.com
+  - dieuhoa.nguyen@nfq.com
+  - nhatlong.nguyen@nfq.com
+
+vault:
+  enable: true
+  force: false
+
+project: trainee-final-project-devops
+
+services:
+  private:
+    - name: trainee-final-project-devops
+      enable: true
+      d13Version: 1.0.0
+      branch:
+        - production
+      gitSecret: false
+      dockerBuild:
+        dockerFile: Dockerfile
+        # arguments:
+        #   - --no-cache
+        #   - --build-arg
+        #   - TOKEN=1234abcd
+      envFile: .env
+      details:
+        hostname:
+          - host: devops-final-project.nfq-asia.com
+            paths:
+              - /
+        port: 80
+        bodySize: 5m
+        resources:
+          requests:
+            cpu: 10m
+            memory: 50Mi
+          limits:
+            cpu: 10m
+            memory: 50Mi
