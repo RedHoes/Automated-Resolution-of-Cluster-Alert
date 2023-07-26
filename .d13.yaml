@@ -29,7 +29,7 @@ services:
           - host: devops-final-project.nfq-asia.com
             paths:
               - /
-        port: 80
+        port: 8000
         bodySize: 5m
         resources:
           requests:
