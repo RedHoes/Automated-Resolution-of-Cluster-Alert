@@ -15,11 +15,10 @@ COPY . .
 
 # Set environment variables from .env file
 ENV WebhookURL=webhookurl
-ENV ELASTIC_PASSWORD=elasticpw
 ENV OPENAI_API_KEY=apikey
 
 # Expose the port on which the application will run
 EXPOSE 8000
 
 # Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--env-file", ".env"]
