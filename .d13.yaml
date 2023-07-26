@@ -33,8 +33,6 @@ services:
         bodySize: 5m
         resources:
           requests:
-            cpu: 10m
-            memory: 50Mi
+            memory: 512Mi
           limits:
-            cpu: 10m
-            memory: 50Mi
+            memory: 512Mi
