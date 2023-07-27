@@ -1,1 +1,2 @@
-from .enum import enum
+from .messagetype import MessageTypes
+from .Slackmessage import SlackMessages

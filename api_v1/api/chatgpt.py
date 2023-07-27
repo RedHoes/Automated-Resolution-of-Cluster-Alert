@@ -21,6 +21,7 @@ class chatGPT:
         
         response = message["content"]
         
-        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason)
+        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason, SharedVariables.status, SharedVariables.alertname, SharedVariables.description)
         
         return Response.chatgpt(message)
+    

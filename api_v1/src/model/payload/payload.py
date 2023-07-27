@@ -1,7 +1,7 @@
 import json
 import os
 import openai
-from ..enum import enum
+from ..enum import MessageTypes
 
 class payload:
     def __init__(self):
@@ -14,46 +14,102 @@ class payload:
         }       
         return headers       
            
-    def parse_payload(message: str, rulename: str, reason: str):
+    def parse_payload_kibana(message: str, rulename: str, reason: str):
         payload = {
             "blocks": [
             {
-                "type": enum.SECTION,
+                "type": MessageTypes.SECTION,
                 "text": {
-                    "type": enum.MRKDWN,
+                    "type": MessageTypes.MRKDWN,
                     "text": "Hey there :wave: I'm `trainee-alerts`. I'm here to help you resolve your problem.\nThere are five steps to resolve the below issue:"
                 }
             },
             {
-                "type": enum.SECTION,
+                "type": MessageTypes.SECTION,
                 "text": {
-                    "type": enum.MRKDWN,
-                    "text": f":warning:  *ALERT: {rulename}*"
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":warning:  *ALERT NAME: {rulename}*"
                 }
             },
             {
-                "type": enum.SECTION,
+                "type": MessageTypes.SECTION,
                 "text": {
-                    "type": enum.MRKDWN,
+                    "type": MessageTypes.MRKDWN,
                     "text": f":question:  *Reason: {reason}*"
                 }
             },
             {
-                "type": enum.SECTION,
+                "type": MessageTypes.SECTION,
                 "text": {
-                    "type": enum.MRKDWN,
+                    "type": MessageTypes.MRKDWN,
                     "text": f":point_right:  *SOLUTION* \n{message}"
                 }
             },
             {
-                "type": enum.CONTEXT,
+                "type": MessageTypes.CONTEXT,
                 "elements": [
                     {
-                        "type": enum.MRKDWN,
+                        "type": MessageTypes.MRKDWN,
                         "text": "*This is developed by devops-trainees*"
                     },
                     {
-                        "type": enum.IMAGE,
+                        "type": MessageTypes.IMAGE,
+                        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRjjlDvUCrIh10Bjm5FyMq0GaM4v9riT2U3wriY9gVcm3b0sw4jq5U9dySnkTuQtepJo&usqp=CAU",
+                        "alt_text": "nfq_logo"
+                    }
+                ]
+            }
+            ]
+        }
+        return payload
+    
+    def parse_payload_prometheus(message: str, status: str, alertname: str, description: str):
+        payload = {
+            "blocks": [
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": "Hey there :wave: I'm `trainee-alerts`. I'm here to help you resolve your problem.\nThere are five steps to resolve the below issue:"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":warning:  *ALERT NAME: {alertname}*"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":question:  *Status: {status}*"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":alert:  *Status: {description}*"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":point_right:  *SOLUTION* \n{message}"
+                }
+            },
+            {
+                "type": MessageTypes.CONTEXT,
+                "elements": [
+                    {
+                        "type": MessageTypes.MRKDWN,
+                        "text": "*This is developed by devops-trainees*"
+                    },
+                    {
+                        "type": MessageTypes.IMAGE,
                         "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRjjlDvUCrIh10Bjm5FyMq0GaM4v9riT2U3wriY9gVcm3b0sw4jq5U9dySnkTuQtepJo&usqp=CAU",
                         "alt_text": "nfq_logo"
                     }
