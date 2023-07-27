@@ -77,7 +77,7 @@ class payload:
         request_payload = { 
             "messages": [
                 {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
-                {"role": "user", "content": f"runbook for {new_message} give me the solution of this issues in 5 steps"}
+                {"role": "user", "content": f"runbook for {new_message}"}
             ],
             "model": "gpt-3.5-turbo",
         }
