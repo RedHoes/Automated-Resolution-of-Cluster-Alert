@@ -14,9 +14,13 @@ class alert:
         data = json.loads(body.decode())
         SharedVariables.rulename = data["rulename"]
         SharedVariables.reason = data["reason"]
+        SharedVariables.alertname = "None"
+        SharedVariables.status = "None"
+        SharedVariables.description = "None"
         message = f"Message: {SharedVariables.reason}"
         chatGPT.chatGPTCall(message)  
         return Input.kibana_alert(message) 
+    
     @router.post("/prometheus/alert")
     async def receive_alert(request: Request):
         body = await request.body()
@@ -24,10 +28,13 @@ class alert:
         SharedVariables.alertname = data["commonLabels"]["alertname"]
         SharedVariables.status = data["status"]
         SharedVariables.description = data["alerts"][0]["annotations"]["description"]
+        SharedVariables.rulename = "None"
+        SharedVariables.reason = "None"
         if data.get("status") == "firing":
             message = f"Message: {SharedVariables.description}"
             chatGPT.chatGPTCall(message)  
         return Input.prometheus_alert(message)
+    
     @router.post("prometheus/logs")
     async def receive_logs(request: Request):
         body = await request.body()

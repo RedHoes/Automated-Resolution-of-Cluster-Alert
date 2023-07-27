@@ -10,9 +10,9 @@ class Slack:
     @router.post("/slack")
     def send_slack_message(message: str, rulename: str, reason: str, status: str, alertname: str, description: str):
         try:
-            if rulename:
+            if rulename != "None":
                 payloads = payload.parse_payload_kibana(message, rulename, reason)
-            if status:
+            if status != "None":
                 payloads = payload.parse_payload_prometheus(message, status, alertname, description)
             webhook_url= os.getenv("WebhookURL")
             
