@@ -73,11 +73,19 @@ class payload:
     
     @staticmethod
     def request_payload(message):
+        new_message = payload.parse_message(message)
         request_payload = { 
             "messages": [
                 {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
-                 {"role": "user", "content": f"Give me some solution to resolve this issue: {message} ?"}
+                {"role": "user", "content": f"runbook for {new_message} give me the solution of this issues in 5 steps"}
             ],
             "model": "gpt-3.5-turbo",
         }
         return request_payload
+    
+    @staticmethod
+    def parse_message(message: str):
+        sentences = message.split('.')
+        sentence = sentences[0].strip()
+        return sentence
+
