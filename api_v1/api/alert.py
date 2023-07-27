@@ -17,3 +17,9 @@ class alert:
         message = f"Message: {SharedVariables.reason}"
         chatGPT.chatGPTCall(message)  
         return kibana_alert.alert(message) 
+    @router.post("/prometheus/alert")
+    async def receive_alert(request: Request):
+        body = await request.body()
+        data = json.loads(body.decode())
+        print(data)
+        return data
