@@ -21,15 +21,9 @@ class alert:
     async def receive_alert(request: Request):
         body = await request.body()
         data = json.loads(body.decode())
-        print(data)
         SharedVariables.alertname = data["commonLabels"]["alertname"]
         SharedVariables.status = data["status"]
         SharedVariables.description = data["alerts"][0]["annotations"]["description"]
-        # if SharedVariables.status == "firing":
-        print(SharedVariables.alertname)
-        print(SharedVariables.status)
-        print(SharedVariables.description)
-        print(data.get("status"))
         if data.get("status") == "firing":
             message = f"Message: {SharedVariables.description}"
             chatGPT.chatGPTCall(message)  
