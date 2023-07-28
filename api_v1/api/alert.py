@@ -18,7 +18,7 @@ class alert:
         SharedVariables.status = "None"
         SharedVariables.description = "None"
         message = f"Message: {SharedVariables.reason}"
-        chatGPT.chatGPTCall(message)  
+        chatGPT.chatGPTCallkibana(message)  
         return Input.kibana_alert(message) 
     
     @router.post("/prometheus/alert")
@@ -32,10 +32,10 @@ class alert:
         SharedVariables.reason = "None"
         if data.get("status") == "firing":
             message = f"Message: {SharedVariables.description}"
-            chatGPT.chatGPTCall(message)  
+            chatGPT.chatGPTCallprometheus(message)  
         return Input.prometheus_alert(message)
     
-    @router.post("prometheus/logs")
+    @router.post("/app/logs")
     async def receive_logs(request: Request):
         body = await request.body()
         data = json.loads(body.decode())

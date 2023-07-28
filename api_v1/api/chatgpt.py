@@ -8,10 +8,27 @@ from ..src.model.shared_module import SharedVariables
 router = APIRouter()
 
 class chatGPT:
-    @router.post("/chatgpt")
-    def chatGPTCall(message: str):
+    @router.post("/chatgpt/kibana")
+    def chatGPTCallkibana(message: str):
         
-        request_payload = payload.request_payload(message)
+        request_payload = payload.request_payload_kibana(message)
+        
+        header = payload.getHeader()
+        
+        completion = openai.ChatCompletion.create(**request_payload, headers=header)
+        
+        message = payload.convertToJson(completion)
+        
+        response = message["content"]
+        
+        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason, SharedVariables.status, SharedVariables.alertname, SharedVariables.description)
+        
+        return Response.chatgpt(message)
+    
+    @router.post("/chatgpt/prometheus")
+    def chatGPTCallprometheus(message: str):
+        
+        request_payload = payload.request_payload_prometheus(message)
         
         header = payload.getHeader()
         

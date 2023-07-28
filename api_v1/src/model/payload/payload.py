@@ -128,12 +128,24 @@ class payload:
         return res 
     
     @staticmethod
-    def request_payload(message):
+    def request_payload_kibana(message):
         new_message = payload.parse_message(message)
         request_payload = { 
             "messages": [
                 {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
-                {"role": "user", "content": f"runbook for {new_message}"}
+                {"role": "user", "content": f"my kibana alert return this message: {new_message}, help me to resolve it"}
+            ],
+            "model": "gpt-3.5-turbo",
+        }
+        return request_payload
+    
+    @staticmethod
+    def request_payload_prometheus(message):
+        new_message = payload.parse_message(message)
+        request_payload = { 
+            "messages": [
+                {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
+                {"role": "user", "content": f"my alert manager from prometheus return this message: {new_message}, help me to resolve it"}
             ],
             "model": "gpt-3.5-turbo",
         }
