@@ -2,6 +2,7 @@ import json
 import os
 import openai
 from ..enum import MessageTypes
+from ..shared_module import SharedVariables
 
 class payload:
     def __init__(self):
@@ -21,7 +22,7 @@ class payload:
                 "type": MessageTypes.SECTION,
                 "text": {
                     "type": MessageTypes.MRKDWN,
-                    "text": "Hey there :wave: I'm `trainee-alerts`. I'm here to help you resolve your problem.\nThere are five steps to resolve the below issue:"
+                    "text": MessageTypes.TEXT
                 }
             },
             {
@@ -50,12 +51,12 @@ class payload:
                 "elements": [
                     {
                         "type": MessageTypes.MRKDWN,
-                        "text": "*This is developed by devops-trainees*"
+                        "text": MessageTypes.ELEMENT
                     },
                     {
                         "type": MessageTypes.IMAGE,
-                        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRjjlDvUCrIh10Bjm5FyMq0GaM4v9riT2U3wriY9gVcm3b0sw4jq5U9dySnkTuQtepJo&usqp=CAU",
-                        "alt_text": "nfq_logo"
+                        "image_url": MessageTypes.URL,
+                        "alt_text": MessageTypes.LOGO
                     }
                 ]
             }
@@ -70,7 +71,7 @@ class payload:
                 "type": MessageTypes.SECTION,
                 "text": {
                     "type": MessageTypes.MRKDWN,
-                    "text": "Hey there :wave: I'm `trainee-alerts`. I'm here to help you resolve your problem.\nThere are five steps to resolve the below issue:"
+                    "text": MessageTypes.TEXT
                 }
             },
             {
@@ -84,14 +85,14 @@ class payload:
                 "type": MessageTypes.SECTION,
                 "text": {
                     "type": MessageTypes.MRKDWN,
-                    "text": f":question:  *Status: {status}*"
+                    "text": f":fire:  *Status: {status}*"
                 }
             },
             {
                 "type": MessageTypes.SECTION,
                 "text": {
                     "type": MessageTypes.MRKDWN,
-                    "text": f":alert:  *Status: {description}*"
+                    "text": f":question:  *Description: {description}*"
                 }
             },
             {
@@ -106,12 +107,12 @@ class payload:
                 "elements": [
                     {
                         "type": MessageTypes.MRKDWN,
-                        "text": "*This is developed by devops-trainees*"
+                        "text": MessageTypes.ELEMENT
                     },
                     {
                         "type": MessageTypes.IMAGE,
-                        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRjjlDvUCrIh10Bjm5FyMq0GaM4v9riT2U3wriY9gVcm3b0sw4jq5U9dySnkTuQtepJo&usqp=CAU",
-                        "alt_text": "nfq_logo"
+                        "image_url": MessageTypes.URL,
+                        "alt_text": MessageTypes.LOGO
                     }
                 ]
             }
@@ -119,14 +120,14 @@ class payload:
         }
         return payload
 
-    def parse_payload_APM(message: str, appName: str, language: str, messages: str):
+    def parse_payload_log(message: str, appName: str, language: str, messages: str):
         payload = {
             "blocks": [
             {
                 "type": MessageTypes.SECTION,
                 "text": {
                     "type": MessageTypes.MRKDWN,
-                    "text": "Hey there :wave: I'm `trainee-alerts`. I'm here to help you resolve your problem.\nThere are five steps to resolve the below issue:"
+                    "text": MessageTypes.TEXT
                 }
             },
             {
@@ -140,14 +141,14 @@ class payload:
                 "type": MessageTypes.SECTION,
                 "text": {
                     "type": MessageTypes.MRKDWN,
-                    "text": f":question:  *Language: {language}*"
+                    "text": f":globe_with_meridians:  *Language: {language}*"
                 }
             },
             {
                 "type": MessageTypes.SECTION,
                 "text": {
                     "type": MessageTypes.MRKDWN,
-                    "text": f":alert:  *Status: {messages}*"
+                    "text": f":fire:  *Status: {messages}*"
                 }
             },
             {
@@ -162,12 +163,12 @@ class payload:
                 "elements": [
                     {
                         "type": MessageTypes.MRKDWN,
-                        "text": "*This is developed by devops-trainees*"
+                        "text": MessageTypes.ELEMENT
                     },
                     {
                         "type": MessageTypes.IMAGE,
-                        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRjjlDvUCrIh10Bjm5FyMq0GaM4v9riT2U3wriY9gVcm3b0sw4jq5U9dySnkTuQtepJo&usqp=CAU",
-                        "alt_text": "nfq_logo"
+                        "image_url": MessageTypes.URL,
+                        "alt_text": MessageTypes.LOGO
                     }
                 ]
             }
@@ -188,8 +189,8 @@ class payload:
         new_message = payload.parse_message(message)
         request_payload = { 
             "messages": [
-                {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
-                {"role": "user", "content": f"my kibana alert return this message: {new_message}, help me to resolve it"}
+                {"role": "system", "content": "Runbook to resolve this problem from kibana alert"},
+                {"role": "user", "content": f"{new_message}"}
             ],
             "model": "gpt-3.5-turbo",
         }
@@ -200,8 +201,8 @@ class payload:
         new_message = payload.parse_message(message)
         request_payload = { 
             "messages": [
-                {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
-                {"role": "user", "content": f"my alert manager from prometheus return this message: {new_message}, help me to resolve it"}
+                {"role": "system", "content": "Runbook to resolve this problem for alert manager from prometheus"},
+                {"role": "user", "content": f"{new_message}"}
             ],
             "model": "gpt-3.5-turbo",
         }
@@ -210,10 +211,11 @@ class payload:
     @staticmethod
     def request_payload_APM(message):
         new_message = payload.parse_message(message)
+        language = SharedVariables.language
         request_payload = { 
             "messages": [
-                {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
-                {"role": "user", "content": f"my APM agent from kibana return this message: {new_message}, help me to resolve it"}
+                {"role": "system", "content": f"Runbook to resolve this problem for {language}"},
+                {"role": "user", "content": f"{new_message}"}
             ],
             "model": "gpt-3.5-turbo",
         }
