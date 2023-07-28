@@ -23,6 +23,7 @@ class alert:
     
     @router.post("/prometheus/alert")
     async def receive_alert(request: Request):
+        # try catch
         body = await request.body()
         data = json.loads(body.decode())
         SharedVariables.alertname = data["commonLabels"]["alertname"]
