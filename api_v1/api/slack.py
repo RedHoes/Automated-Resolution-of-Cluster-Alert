@@ -8,12 +8,14 @@ router = APIRouter()
 
 class Slack:
     @router.post("/slack")
-    def send_slack_message(message: str, rulename: str, reason: str, status: str, alertname: str, description: str):
+    def send_slack_message(message: str, rulename: str, reason: str, status: str, alertname: str, description: str, appName: str, language: str, messages: str):
         try:
             if rulename != "None":
                 payloads = payload.parse_payload_kibana(message, rulename, reason)
             if status != "None":
                 payloads = payload.parse_payload_prometheus(message, status, alertname, description)
+            if appName != "None":
+                payloads = payload.parse_payload_APM(message, appName, language, messages)
             webhook_url= os.getenv("WebhookURL")
             
             response = requests.post(webhook_url, json=payloads)

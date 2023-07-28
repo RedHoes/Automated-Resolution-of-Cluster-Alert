@@ -17,6 +17,9 @@ class alert:
         SharedVariables.alertname = "None"
         SharedVariables.status = "None"
         SharedVariables.description = "None"
+        SharedVariables.appName = "None"
+        SharedVariables.language = "None"
+        SharedVariables.message = "None"
         message = f"Message: {SharedVariables.reason}"
         chatGPT.chatGPTCallkibana(message)  
         return Input.kibana_alert(message) 
@@ -31,6 +34,9 @@ class alert:
         SharedVariables.description = data["alerts"][0]["annotations"]["description"]
         SharedVariables.rulename = "None"
         SharedVariables.reason = "None"
+        SharedVariables.appName = "None"
+        SharedVariables.language = "None"
+        SharedVariables.message = "None"
         if data.get("status") == "firing":
             message = f"Message: {SharedVariables.description}"
             chatGPT.chatGPTCallprometheus(message)  
@@ -40,9 +46,15 @@ class alert:
     async def receive_logs(request: Request):
         body = await request.body()
         data = json.loads(body.decode())
-        print(data)
-        message = f"Message: {data}"
-        # Manage message
-        # call to chatGPT
-        return Input.prometheus_log(message)
+        SharedVariables.appName = data["appName"]
+        SharedVariables.language = data["language"]
+        SharedVariables.message = data["message"]
+        SharedVariables.alertname = "None"
+        SharedVariables.status = "None"
+        SharedVariables.description = "None"
+        SharedVariables.rulename = "None"
+        SharedVariables.reason = "None"
+        message = f"Message: {SharedVariables.message}"
+        chatGPT.chatGPTCallAPM(message)  
+        return Input.APM_log(message)
     

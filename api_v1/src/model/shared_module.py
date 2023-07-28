@@ -5,3 +5,6 @@ class SharedVariables:
         self.status = None
         self.alertname  = None
         self.description = None
+        self.appName = None
+        self.message = None
+        self.language = None

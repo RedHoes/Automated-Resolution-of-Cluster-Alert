@@ -119,6 +119,62 @@ class payload:
         }
         return payload
 
+    def parse_payload_APM(message: str, appName: str, language: str, messages: str):
+        payload = {
+            "blocks": [
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": "Hey there :wave: I'm `trainee-alerts`. I'm here to help you resolve your problem.\nThere are five steps to resolve the below issue:"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":warning:  *APP NAME: {appName}*"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":question:  *Language: {language}*"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":alert:  *Status: {messages}*"
+                }
+            },
+            {
+                "type": MessageTypes.SECTION,
+                "text": {
+                    "type": MessageTypes.MRKDWN,
+                    "text": f":point_right:  *SOLUTION* \n{message}"
+                }
+            },
+            {
+                "type": MessageTypes.CONTEXT,
+                "elements": [
+                    {
+                        "type": MessageTypes.MRKDWN,
+                        "text": "*This is developed by devops-trainees*"
+                    },
+                    {
+                        "type": MessageTypes.IMAGE,
+                        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRjjlDvUCrIh10Bjm5FyMq0GaM4v9riT2U3wriY9gVcm3b0sw4jq5U9dySnkTuQtepJo&usqp=CAU",
+                        "alt_text": "nfq_logo"
+                    }
+                ]
+            }
+            ]
+        }
+        return payload
+
     @staticmethod
     def convertToJson(completion):
         mess = completion.choices[0].message
@@ -146,6 +202,18 @@ class payload:
             "messages": [
                 {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
                 {"role": "user", "content": f"my alert manager from prometheus return this message: {new_message}, help me to resolve it"}
+            ],
+            "model": "gpt-3.5-turbo",
+        }
+        return request_payload
+    
+    @staticmethod
+    def request_payload_APM(message):
+        new_message = payload.parse_message(message)
+        request_payload = { 
+            "messages": [
+                {"role": "system", "content": "Resolve with concise 5 steps for DevOps with each step having the same length"},
+                {"role": "user", "content": f"my APM agent from kibana return this message: {new_message}, help me to resolve it"}
             ],
             "model": "gpt-3.5-turbo",
         }

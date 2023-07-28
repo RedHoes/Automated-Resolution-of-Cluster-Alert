@@ -21,7 +21,7 @@ class chatGPT:
         
         response = message["content"]
         
-        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason, SharedVariables.status, SharedVariables.alertname, SharedVariables.description)
+        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason, SharedVariables.status, SharedVariables.alertname, SharedVariables.description, SharedVariables.appName, SharedVariables.language, SharedVariables.message)
         
         return Response.chatgpt(message)
     
@@ -38,7 +38,23 @@ class chatGPT:
         
         response = message["content"]
         
-        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason, SharedVariables.status, SharedVariables.alertname, SharedVariables.description)
+        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason, SharedVariables.status, SharedVariables.alertname, SharedVariables.description, SharedVariables.appName, SharedVariables.language, SharedVariables.message)
         
         return Response.chatgpt(message)
     
+    @router.post("/chatgpt/APM")
+    def chatGPTCallAPM(message: str):
+        
+        request_payload = payload.request_payload_APM(message)
+        
+        header = payload.getHeader()
+        
+        completion = openai.ChatCompletion.create(**request_payload, headers=header)
+        
+        message = payload.convertToJson(completion)
+        
+        response = message["content"]
+        
+        Slack.send_slack_message(response, SharedVariables.rulename, SharedVariables.reason, SharedVariables.status, SharedVariables.alertname, SharedVariables.description, SharedVariables.appName, SharedVariables.language, SharedVariables.message)
+        
+        return Response.chatgpt(message)
