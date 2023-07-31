@@ -2,7 +2,6 @@ from fastapi import APIRouter
 import requests
 from ..src.model.payload import payload
 from ..src.model.enum import SlackMessages
-from ..src.model.shared_module import SharedVariables
 import os
 
 router = APIRouter()

@@ -209,7 +209,7 @@ class payload:
         return request_payload
     
     @staticmethod
-    def request_payload_APM(message):
+    def request_payload_log(message):
         new_message = payload.parse_message(message)
         language = SharedVariables.language
         request_payload = { 
