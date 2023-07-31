@@ -36,7 +36,7 @@ class alert:
             SharedVariables.alertname = data["commonLabels"]["alertname"]
             SharedVariables.status = data["status"]
             SharedVariables.description = data["alerts"][0]["annotations"]["description"]
-            SharedVariables.define_value_prometheus
+            SharedVariables.define_value_prometheus()
             
             if data.get("status") == "firing":
                 message = f"Message: {SharedVariables.description}"
