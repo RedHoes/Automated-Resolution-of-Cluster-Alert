@@ -201,7 +201,7 @@ class payload:
         new_message = payload.parse_message(message)
         request_payload = { 
             "messages": [
-                {"role": "system", "content": "Runbook to resolve this problem for alert manager from prometheus"},
+                {"role": "system", "content": "Runbook to resolve this problem for alert manager from prometheus in Kubernetes"},
                 {"role": "user", "content": f"{new_message}"}
             ],
             "model": "gpt-3.5-turbo",
